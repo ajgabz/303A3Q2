@@ -1,13 +1,8 @@
 
 public class Movable extends WorldObject{
 
-	private RandomMotion engine;
-	
-	public Movable(char objectToken, String objectName, RandomMotion move) {
+	public Movable(char objectToken, String objectName) {
 		super(objectToken, objectName);
-		this.engine = move;
 	}
 	
-	public 
-
 }
