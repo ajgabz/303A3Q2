@@ -4,13 +4,13 @@ public class World {
 	private WorldObject[][] myWorld;
 	private int height;
 	private int width;
-	private ArrayList<Position> positions;
+	private ArrayList<Position> autonomousCellPositions;
 	
 	public World(int worldHeight, int worldWidth){
 		this.height = worldHeight;
 		this.width = worldWidth;
 		
-		this.positions = new ArrayList<Position>();
+		this.autonomousCellPositions = new ArrayList<Position>();
 		this.myWorld = new WorldObject[height][width];
 		
 	}
@@ -67,7 +67,7 @@ public class World {
 			this.myWorld[x][y] = obj;
 			if (obj instanceof Autonomous) {
 				Position pos = new Position(x,y);
-				positions.add(pos);
+				autonomousCellPositions.add(pos);
 			}
 		} else {
 			throw new IllegalArgumentException();
