@@ -37,34 +37,44 @@ public class World {
 		
 	}
 	
-	public boolean canAddAt(int x, int y){
-		if(this.myWorld[x][y] == null){
-			return true;
-		}else{
-			return false; 
-		}
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean isCellEmpty(int x, int y){
+		return (this.myWorld[x][y] == null);
 	}
 	
-	public void add(WorldObject obj){
-		int h = this.height; 
-		int w = this.width; 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean isValidIndex(int x, int y) {
+		int maxAccessibleHeight = this.height - 1;
+		int maxAccessibleWidth = this.width - 1;
 		
-		for(int i = 0; i < w; i++){
-			for(int j = 0; j < h; j++){
-				if(canAddAt(i,j) == true){
-					if(obj instanceof Autonomous ){
-						Position pos = new Position(i,j);
-						positions.add(pos);
-					}
-					this.myWorld[i][j] = obj;
-					return;
-				}
+		return ((0 <= x) && (x <= maxAccessibleHeight) && (0 <= y) && (y <= maxAccessibleWidth));
+	}
+	
+	
+	public void add(WorldObject obj, int x, int y){
+		
+		if (isCellEmpty(x,y)) {
+			this.myWorld[x][y] = obj;
+			if (obj instanceof Autonomous) {
+				Position pos = new Position(x,y);
+				positions.add(pos);
 			}
+		} else {
+			throw new IllegalArgumentException();
 		}
 		
-		throw new IllegalArgumentException();
-		
 	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
