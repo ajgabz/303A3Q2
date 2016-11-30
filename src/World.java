@@ -2,18 +2,30 @@ import java.util.ArrayList;
 
 public class World {
 	private WorldObject[][] myWorld;
-	private int height;
-	private int width;
-	private ArrayList<Position> autonomousCellPositions;
+	private int numRows;
+	private int numCols;
 	
-	public World(int worldHeight, int worldWidth){
-		this.height = worldHeight;
-		this.width = worldWidth;
+	//private ArrayList<Autonomous> autonomousBlocks;
+	
+	public World(int rows, int columns){
+		this.numRows = rows;
+		this.numCols = columns;
 		
-		this.autonomousCellPositions = new ArrayList<Position>();
-		this.myWorld = new WorldObject[height][width];
-		
+		//this.autonomousBlocks = new ArrayList<Position>();
+		this.myWorld = new WorldObject[numRows][numCols];
 	}
+	
+	public void step() {
+		for (int i = 0; i < this.numRows; i++) {
+			for (int j = 0;  j < this.numCols; j++) {
+				if (myWorld[i][j] instanceof Autonomous) {
+					
+				}
+			}
+		}
+	}
+	
+	
 	
 	public WorldObject[][] getMyWorld(){
 		WorldObject[][] clone = this.myWorld.clone();
@@ -22,8 +34,8 @@ public class World {
 	
 	
 	public void display(){
-		int h = this.height; 
-		int w = this.width; 
+		int h = this.numRows; 
+		int w = this.numCols; 
 		
 		for(int j = 0; j < h; j++){
 			for(int i = 0; i < w; i++){
@@ -54,8 +66,8 @@ public class World {
 	 * @return
 	 */
 	public boolean isValidIndex(int x, int y) {
-		int maxAccessibleHeight = this.height - 1;
-		int maxAccessibleWidth = this.width - 1;
+		int maxAccessibleHeight = this.numRows - 1;
+		int maxAccessibleWidth = this.numCols - 1;
 		
 		return ((0 <= x) && (x <= maxAccessibleHeight) && (0 <= y) && (y <= maxAccessibleWidth));
 	}
@@ -65,10 +77,6 @@ public class World {
 		
 		if (isCellEmpty(x,y)) {
 			this.myWorld[x][y] = obj;
-			if (obj instanceof Autonomous) {
-				Position pos = new Position(x,y);
-				autonomousCellPositions.add(pos);
-			}
 		} else {
 			throw new IllegalArgumentException();
 		}

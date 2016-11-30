@@ -1,4 +1,4 @@
 
 public enum Direction {
-	NORTH, SOUTH, EAST, WEST
+	NULLSTEP, NORTH, SOUTH, EAST, WEST
 }
