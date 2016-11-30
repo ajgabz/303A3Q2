@@ -16,13 +16,119 @@ public class World {
 	}
 	
 	public void step() {
+		Direction attemptedStep;
+		
 		for (int i = 0; i < this.numRows; i++) {
 			for (int j = 0;  j < this.numCols; j++) {
 				if (myWorld[i][j] instanceof Autonomous) {
 					
+					attemptedStep = ((Autonomous) myWorld[i][j]).step();
+					
 				}
 			}
 		}
+	}
+	
+	private boolean canMove(int i, int j, Direction attemptedMove) {
+		int xSearch = i; 
+		int ySearch = j;
+		
+		switch (attemptedMove) {
+		case NORTH:
+			ySearch--;
+			break;
+		case SOUTH:
+			ySearch++;
+			break;
+		case EAST:
+			xSearch--;
+			break;
+		case WEST:
+			xSearch++;
+			break;
+		case NULLSTEP:
+			return true;
+		}
+		
+		// First, check the boundary conditions
+		if (isValidIndex(xSearch, ySearch)) {
+			if (myWorld[xSearch][ySearch] == null) {
+				return true;
+			} else if (myWorld[xSearch][ySearch] instanceof Immovable) {
+				return false;
+			} else if (myWorld[xSearch][ySearch] instanceof Movable) {
+				return canMove(xSearch, ySearch, attemptedMove);
+			}
+		} else {
+			return false;
+		}
+		
+	}
+	
+	private boolean move(int i, int j, Direction attemptedMove) {
+		int xSearch = i; int ySearch = j; int delta; int boundary;
+		
+		
+		
+		//Check border conditions first
+		if (isMoveWithinBorders(i, j, attemptedMove)) {
+			
+			if (attemptedMove == Direction.NORTH) {
+				for (int i = x; i >= 0; i--) {
+					
+			}
+			
+			
+			switch (attemptedMove) {
+				case NORTH:
+					boundary = 0;
+					delta = -1;
+					break;
+				case SOUTH:
+					boundary = this.numRows - 1;
+					delta = 1;
+					break;
+				case EAST:
+					boundary = this.numCols - 1;
+					delta = 1;
+					break;
+				case WEST:
+					boundary = 0;
+					delta = -1;
+					break;
+			}
+			
+			while 
+			
+		}
+		
+	}
+	
+	private boolean isMoveWithinBorders(int i, int j, Direction attemptedMove) {
+		int newRow = i;
+		int newCol = j;
+		
+		switch (attemptedMove) {
+			case NORTH:
+				newRow--;
+				break;
+			case SOUTH:
+				newRow++;
+				break;
+			case EAST:
+				newCol++;
+				break;
+			case WEST:
+				newCol--;
+				break;
+			case NULLSTEP:
+				return true;
+		}
+		
+		return (isValidIndex(newRow, newCol));
+		}
+		
+		
 	}
 	
 	

@@ -6,9 +6,4 @@ public class Immovable extends WorldObject {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Direction step(){
-		Direction nonstep = NORTH;
-		return nonstep;
-	}
-
 }

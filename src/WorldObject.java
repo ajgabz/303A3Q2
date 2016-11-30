@@ -34,9 +34,4 @@ public abstract class WorldObject {
 		this.name = name;
 	}
 	
-	public Direction step(){
-		return NULLSTEP;
-	}
-	
-	
 }

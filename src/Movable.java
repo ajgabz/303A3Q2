@@ -5,7 +5,4 @@ public class Movable extends WorldObject{
 		super(objectToken, objectName);
 	}
 	
-	public Direction step(){
-		return NULLSTEP;
-	}
 }

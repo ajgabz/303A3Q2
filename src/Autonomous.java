@@ -1,6 +1,6 @@
 
 public class Autonomous extends Movable{
-
+	
 	private RandomMotion engine;
 	
 	public Autonomous(char objectToken, String objectName, RandomMotion move) {
@@ -9,8 +9,9 @@ public class Autonomous extends Movable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Direction step(){
+	public Direction step() {
 		return engine.randomStep();
 	}
+	
 
 }
