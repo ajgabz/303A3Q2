@@ -5,7 +5,7 @@ public class World {
 	private int numRows;
 	private int numCols;
 	
-	//private ArrayList<Autonomous> autonomousBlocks;
+	private ArrayList<Position> previouslyVisited = new ArrayList<Position>();
 	
 	public World(int rows, int columns){
 		this.numRows = rows;
@@ -16,18 +16,57 @@ public class World {
 	}
 	
 	public void step() {
+		
 		Direction attemptedStep;
 		
 		for (int i = 0; i < this.numRows; i++) {
 			for (int j = 0;  j < this.numCols; j++) {
-				if (myWorld[i][j] instanceof Autonomous) {
+				if ((myWorld[i][j] instanceof Autonomous) && (!alreadyMoved(i,j))) {
 					attemptedStep = ((Autonomous) myWorld[i][j]).step();
 					System.out.println("Attempting to move Autonomous Object: " + myWorld[i][j].getName() + " " + attemptedStep.toString());
-					move(i,j, attemptedStep);
+					System.out.println("Current Position of " + myWorld[i][j].getName() + ":(" + i + "," + j + ")");
+					if (move(i,j, attemptedStep)) {
+						System.out.println("Move Successful!");
+						this.previouslyVisited.add(newLocation(i, j, attemptedStep));
+						Position newStep = newLocation(i, j, attemptedStep);
+						System.out.println("New Position: (" + newStep.getI() + "," + newStep.getJ() + ")");
+					} else {
+						System.out.println("Move Unsuccessful!");
+					}
 				}
 			}
 		}
+		
+		this.previouslyVisited.clear();
 	}
+	
+	private Position newLocation(int oldX, int oldY, Direction attemptedMove) {
+		int newX = oldX; 
+		int newY = oldY;
+		
+		switch (attemptedMove) {
+		case NORTH:
+			newY--;
+			break;
+		case SOUTH:
+			newY++;
+			break;
+		case EAST:
+			newX--;
+			break;
+		case WEST:
+			newX++;
+			break;
+		}
+		
+		Position newLoc = new Position(newX, newY);
+		return newLoc;
+	}
+	
+	private boolean alreadyMoved(int x, int y) {
+		return (this.previouslyVisited.contains(new Position(x, y)));
+	}
+	
 	
 	private boolean move(int i, int j, Direction attemptedMove) {
 		int xSearch = i; 
@@ -239,6 +278,7 @@ public class World {
 		testWorld.display();
 		System.out.println("-------------");
 		for (int i = 0; i <= 3; i++) {
+			System.out.println("Step " + (i+1));
 			testWorld.step();
 			testWorld.display();
 			System.out.println("-------------");
