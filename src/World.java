@@ -21,15 +21,15 @@ public class World {
 		for (int i = 0; i < this.numRows; i++) {
 			for (int j = 0;  j < this.numCols; j++) {
 				if (myWorld[i][j] instanceof Autonomous) {
-					
 					attemptedStep = ((Autonomous) myWorld[i][j]).step();
-					
+					System.out.println("Attempting to move Autonomous Object: " + myWorld[i][j].getName() + " " + attemptedStep.toString());
+					move(i,j, attemptedStep);
 				}
 			}
 		}
 	}
 	
-	private boolean canMove(int i, int j, Direction attemptedMove) {
+	private boolean move(int i, int j, Direction attemptedMove) {
 		int xSearch = i; 
 		int ySearch = j;
 		
@@ -46,26 +46,36 @@ public class World {
 		case WEST:
 			xSearch++;
 			break;
-		case NULLSTEP:
-			return true;
 		}
 		
 		// First, check the boundary conditions
 		if (isValidIndex(xSearch, ySearch)) {
 			if (myWorld[xSearch][ySearch] == null) {
+				swap(i, j, xSearch, ySearch);
 				return true;
 			} else if (myWorld[xSearch][ySearch] instanceof Immovable) {
 				return false;
 			} else if (myWorld[xSearch][ySearch] instanceof Movable) {
-				return canMove(xSearch, ySearch, attemptedMove);
+				if (move(xSearch, ySearch, attemptedMove)) {
+					swap(i, j, xSearch, ySearch);
+					return true;
+				} else {
+					return false;
+				}
 			}
-		} else {
-			return false;
-		}
+		} 
+		
+		return false;
 		
 	}
 	
-	private boolean move(int i, int j, Direction attemptedMove) {
+	private void swap(int r1, int c1, int r2, int c2) {
+		WorldObject temp = this.myWorld[r1][c1];
+		this.myWorld[r1][c1] = this.myWorld[r2][c2];
+		this.myWorld[r2][c2] = temp;
+	}
+	
+	/*private boolean move(int i, int j, Direction attemptedMove) {
 		int xSearch = i; int ySearch = j; int delta; int boundary;
 		
 		
@@ -102,7 +112,7 @@ public class World {
 			
 		}
 		
-	}
+	}*/
 	
 	private boolean isMoveWithinBorders(int i, int j, Direction attemptedMove) {
 		int newRow = i;
@@ -121,15 +131,11 @@ public class World {
 			case WEST:
 				newCol--;
 				break;
-			case NULLSTEP:
-				return true;
 		}
 		
 		return (isValidIndex(newRow, newCol));
 		}
 		
-		
-	}
 	
 	
 	
@@ -143,7 +149,19 @@ public class World {
 		int h = this.numRows; 
 		int w = this.numCols; 
 		
-		for(int j = 0; j < h; j++){
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < w; j++) {
+				if(this.myWorld[i][j] == null){
+					System.out.print("░");
+				}else{
+					System.out.print(this.myWorld[i][j].getToken());
+				}
+			}
+			System.out.println("");
+		}
+		
+		
+		/*for(int j = 0; j < h; j++){
 			for(int i = 0; i < w; i++){
 				if(this.myWorld[i][j] == null){
 					System.out.print(" ");
@@ -151,7 +169,7 @@ public class World {
 					System.out.print(this.myWorld[i][j].getToken());
 				}
 			}
-		}
+		}*/
 		
 	}
 	
@@ -190,8 +208,42 @@ public class World {
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		World testWorld = new World(5,5);
+		
+		Autonomous a1 = new Autonomous('A', "a1");
+		Autonomous a2 = new Autonomous('A', "a2");
+		Autonomous a3 = new Autonomous('A', "a3");
+		
+		Immovable i1 = new Immovable('I', "i1");
+		Immovable i2 = new Immovable('I', "i2");
+		Immovable i3 = new Immovable('I', "i3");
+		Immovable i4 = new Immovable('I', "i4");
+		
+		Movable m1 = new Movable('M', "m1");
+		Movable m2 = new Movable('M', "m2");
+		Movable m3 = new Movable('M', "m3");
+		
+		testWorld.add(a1, 1, 0);
+		testWorld.add(a2, 2, 1);
+		testWorld.add(a3, 4, 2);
+		
+		testWorld.add(i1, 2, 0);
+		testWorld.add(i2, 2, 3);
+		testWorld.add(i3, 4, 0);
+		testWorld.add(i4, 4, 3);
+		
+		testWorld.add(m1, 1, 2);
+		testWorld.add(m2, 3, 1);
+		testWorld.add(m3, 3, 2);
+		
+		testWorld.display();
+		System.out.println("-------------");
+		for (int i = 0; i <= 3; i++) {
+			testWorld.step();
+			testWorld.display();
+			System.out.println("-------------");
+		}
+		
 	}
 
 }

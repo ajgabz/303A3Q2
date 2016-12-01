@@ -14,4 +14,9 @@ public class Position {
 	public int getJ(){
 		return this.j;
 	}
+	
+	public boolean equals(Position other) {
+		return ((this.i == other.getI()) && (this.j == other.getJ()));
+	}
+	
 }
