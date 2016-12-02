@@ -46,16 +46,16 @@ public class World {
 		
 		switch (attemptedMove) {
 		case NORTH:
-			newY--;
-			break;
-		case SOUTH:
-			newY++;
-			break;
-		case EAST:
 			newX--;
 			break;
-		case WEST:
+		case SOUTH:
 			newX++;
+			break;
+		case EAST:
+			newY++;
+			break;
+		case WEST:
+			newY--;
 			break;
 		}
 		
@@ -74,16 +74,16 @@ public class World {
 		
 		switch (attemptedMove) {
 		case NORTH:
-			ySearch--;
-			break;
-		case SOUTH:
-			ySearch++;
-			break;
-		case EAST:
 			xSearch--;
 			break;
-		case WEST:
+		case SOUTH:
 			xSearch++;
+			break;
+		case EAST:
+			ySearch++;
+			break;
+		case WEST:
+			ySearch--;
 			break;
 		}
 		
@@ -247,7 +247,7 @@ public class World {
 	}
 	
 	public static void main(String[] args) {
-		World testWorld = new World(5,5);
+		World testWorld = new World(6,6);
 		
 		Autonomous a1 = new Autonomous('A', "a1");
 		Autonomous a2 = new Autonomous('A', "a2");
@@ -263,21 +263,21 @@ public class World {
 		Movable m3 = new Movable('M', "m3");
 		
 		testWorld.add(a1, 1, 0);
-		testWorld.add(a2, 2, 1);
-		testWorld.add(a3, 4, 2);
+		//testWorld.add(a2, 2, 1);
+		//testWorld.add(a3, 4, 2);
 		
-		testWorld.add(i1, 2, 0);
-		testWorld.add(i2, 2, 3);
-		testWorld.add(i3, 4, 0);
-		testWorld.add(i4, 4, 3);
+		//testWorld.add(i1, 2, 0);
+		//testWorld.add(i2, 2, 3);
+		//testWorld.add(i3, 4, 0);
+		//testWorld.add(i4, 4, 3);
 		
-		testWorld.add(m1, 1, 2);
-		testWorld.add(m2, 3, 1);
-		testWorld.add(m3, 3, 2);
+		testWorld.add(m1, 1, 1);
+		testWorld.add(m2, 1, 3);
+		//testWorld.add(m3, 3, 2);
 		
 		testWorld.display();
 		System.out.println("-------------");
-		for (int i = 0; i <= 3; i++) {
+		for (int i = 0; i <= 9; i++) {
 			System.out.println("Step " + (i+1));
 			testWorld.step();
 			testWorld.display();

@@ -29,6 +29,7 @@ public class Autonomous extends Movable{
 				newStep = Direction.SOUTH;
 				break;
 		}
+		newStep = Direction.EAST;
 		return newStep;
 	
 	}
