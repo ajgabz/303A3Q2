@@ -5,5 +5,5 @@ public class Immovable extends WorldObject {
 		super(objectToken, objectName);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 }

@@ -9,7 +9,6 @@ public abstract class WorldObject {
 		this.name = objectName;
 	}
 	
-	
 	/**
 	 * @return the token
 	 */
@@ -34,6 +33,5 @@ public abstract class WorldObject {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 	
 }
