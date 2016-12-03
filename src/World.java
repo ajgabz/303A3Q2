@@ -7,6 +7,11 @@ public class World {
 	
 	private ArrayList<Position> previouslyVisited = new ArrayList<Position>();
 	
+	/**
+	 * 
+	 * @param rows
+	 * @param columns
+	 */
 	public World(int rows, int columns){
 		this.numRows = rows;
 		this.numCols = columns;
@@ -15,6 +20,9 @@ public class World {
 		this.myWorld = new WorldObject[numRows][numCols];
 	}
 	
+	/**
+	 * 
+	 */
 	public void step() {
 		
 		Direction attemptedStep;
@@ -40,6 +48,13 @@ public class World {
 		this.previouslyVisited.clear();
 	}
 	
+	/**
+	 * 
+	 * @param i
+	 * @param j
+	 * @param attemptedMove
+	 * @return
+	 */
 	private Position newLocation(int oldX, int oldY, Direction attemptedMove) {
 		int newX = oldX; 
 		int newY = oldY;
@@ -63,11 +78,23 @@ public class World {
 		return newLoc;
 	}
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private boolean alreadyMoved(int x, int y) {
 		return (this.previouslyVisited.contains(new Position(x, y)));
 	}
 	
-	
+	/**
+	 * 
+	 * @param i
+	 * @param j
+	 * @param attemptedMove
+	 * @return
+	 */
 	private boolean move(int i, int j, Direction attemptedMove) {
 		int xSearch = i; 
 		int ySearch = j;
@@ -108,6 +135,13 @@ public class World {
 		
 	}
 	
+	/**
+	 * 
+	 * @param r1
+	 * @param c1
+	 * @param r2
+	 * @param c2
+	 */
 	private void swap(int r1, int c1, int r2, int c2) {
 		WorldObject temp = this.myWorld[r1][c1];
 		this.myWorld[r1][c1] = this.myWorld[r2][c2];
@@ -183,7 +217,9 @@ public class World {
 		return clone; 
 	}
 	
-	
+	/**
+	 * 
+	 */
 	public void display(){
 		int h = this.numRows; 
 		int w = this.numCols; 
