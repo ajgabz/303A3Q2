@@ -244,41 +244,87 @@ public class World {
 	}
 	
 	public static void main(String[] args) {
-		World testWorld = new World(6,6);
+World testWorld = new World(10,15);
 		
 		Autonomous a1 = new Autonomous('A', "a1");
 		Autonomous a2 = new Autonomous('A', "a2");
 		Autonomous a3 = new Autonomous('A', "a3");
+		Autonomous a4 = new Autonomous('A', "a4");
+		Autonomous a5 = new Autonomous('A', "a5");
+		Autonomous a6 = new Autonomous('A', "a6");
+		Autonomous a7 = new Autonomous('A', "a7");	
+		Autonomous a8 = new Autonomous('A', "a8");
+		Autonomous a9 = new Autonomous('A', "a9");
+
 		
 		Immovable i1 = new Immovable('I', "i1");
 		Immovable i2 = new Immovable('I', "i2");
 		Immovable i3 = new Immovable('I', "i3");
 		Immovable i4 = new Immovable('I', "i4");
+		Immovable i5 = new Immovable('I', "i5");
+		
 		
 		Movable m1 = new Movable('M', "m1");
 		Movable m2 = new Movable('M', "m2");
 		Movable m3 = new Movable('M', "m3");
-		
+		Movable m4 = new Movable('M', "m4");
+		Movable m5 = new Movable('M', "m5");
+		Movable m6 = new Movable('M', "m6");
+		Movable m7 = new Movable('M', "m7");
+		Movable m8 = new Movable('M', "m8");
+		Movable m9 = new Movable('M', "m9");
+		Movable m10 = new Movable('M', "m10");
+		Movable m11 = new Movable('M', "m11");
+		Movable m13 = new Movable('M', "m13");
+		Movable m14 = new Movable('M', "m14");
+		Movable m15 = new Movable('M', "m15");
+
+		//adding autonomous objects
 		testWorld.add(a1, 1, 0);
-		//testWorld.add(a2, 2, 1);
-		//testWorld.add(a3, 4, 2);
-		
-		//testWorld.add(i1, 2, 0);
-		//testWorld.add(i2, 2, 3);
-		//testWorld.add(i3, 4, 0);
-		//testWorld.add(i4, 4, 3);
-		
+		testWorld.add(a2, 2, 1);
+		testWorld.add(a3, 1, 7);
+		testWorld.add(a4, 8, 13);
+		testWorld.add(a5, 8, 12);
+		testWorld.add(a6, 9, 0);
+		testWorld.add(a7, 0, 14);
+		testWorld.add(a8, 0, 5);
+		testWorld.add(a9, 1, 2);
+
+
+
+		//adding immovable objects
+		testWorld.add(i1, 2, 0);
+		testWorld.add(i2, 5, 8);
+		testWorld.add(i3, 3, 13);
+		testWorld.add(i4, 4, 3);
+		testWorld.add(i5, 0, 3);
+
+		//adding movable objects
 		testWorld.add(m1, 1, 1);
 		testWorld.add(m2, 1, 3);
-		//testWorld.add(m3, 3, 2);
-		
+		testWorld.add(m3, 9, 1);
+		testWorld.add(m4, 9, 13);
+		testWorld.add(m5, 7, 13);
+		testWorld.add(m6, 8, 0);
+		testWorld.add(m7, 0, 6);
+		testWorld.add(m8, 5, 7);
+		testWorld.add(m9, 0, 12);
+		testWorld.add(m10, 0, 13);
+		testWorld.add(m11, 1, 14);
+		testWorld.add(m13, 1, 5);
+		testWorld.add(m14, 1, 6);
+		testWorld.add(m15, 2, 2);
+
+
+		System.out.println("Initial World");
+		System.out.println("---------------");
 		testWorld.display();
-		System.out.println("-------------");
-		for (int i = 0; i <= 9; i++) {
+		System.out.println("---------------");
+		for (int i = 0; i <= 99; i++) {
 			System.out.println("Step " + (i+1));
 			testWorld.step();
 			testWorld.display();
-			System.out.println("-------------");
+			System.out.println("---------------");
 		}
 		
 	}
