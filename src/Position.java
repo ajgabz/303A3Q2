@@ -1,20 +1,40 @@
-import java.util.ArrayList;
+// Aaron Gaba (Student ID: 260450580)
+// Benjamin Taubenblatt (Student ID: 260626105)
 
+
+/**
+ * A Position object is a simple implementation of a two integer tuple
+ * that is used primarily for keeping track of positions in a 2D World array.
+ *
+ */
 public class Position {
-	private int i;
-	private int j;
+	private int row;
+	private int column;
 	
-	public Position(int iObj, int jObj){
-		this.i = iObj;
-		this.j = jObj;
+	/**
+	 * Constructs a new Position object with the given row and column
+	 * @param row
+	 * @param column
+	 */
+	public Position(int row, int column){
+		this.row = row;
+		this.column = column;
 	}
 	
-	public int getI(){
-		return this.i;
+	/**
+	 * Returns the row of the given Position object
+	 * @return
+	 */
+	public int getRow(){
+		return this.row;
 	}
 	
-	public int getJ(){
-		return this.j;
+	/**
+	 * Returns the column of the given Position object
+	 * @return
+	 */
+	public int getColumn(){
+		return this.column;
 	}
 	
 	@Override
@@ -24,34 +44,8 @@ public class Position {
 		} else if (other == null) {
 			return false;
 		} else if (other instanceof Position) {
-			return ((this.i == ((Position) other).getI()) && (this.j == ((Position) other).getJ()));
+			return ((this.row == ((Position) other).getRow()) && (this.column == ((Position) other).getColumn()));
 		}
 			return false;
 	}
-	
-	public static void main(String[] args) {
-		ArrayList<Position> newList = new ArrayList<Position>();
-		Position p1 = new Position(1,2);
-		Position p2 = new Position(3,4);
-		Position p3 = new Position(1,1);
-		Position p4 = new Position(1,2);
-		newList.add(p1);
-		newList.add(p2);
-		
-		if (newList.contains(p3)) {
-			System.out.println("Element p3 is in the list.");
-		} else {
-			System.out.println("Element p3 is not in the list.");
-		}
-		
-		if (newList.contains(p4)) {
-			System.out.println("Element p4 is in the list.");
-		} else {
-			System.out.println("Element p4 is not in the list.");
-		}
-		
-		
-		
-	}
-	
 }

@@ -1,3 +1,6 @@
+// Aaron Gaba (Student ID: 260450580)
+// Benjamin Taubenblatt (Student ID: 260626105)
+
 import java.util.ArrayList;
 
 public class World {
@@ -5,23 +8,32 @@ public class World {
 	private int numRows;
 	private int numCols;
 	
+	//For each step, this list keeps track of the new positions of 
+	//autonomous objects that have moved.  This prevents autonomous objects
+	//from getting multiple turns, as we iterate through the 2D world.
+	
 	private ArrayList<Position> previouslyVisited = new ArrayList<Position>();
 	
 	/**
-	 * 
-	 * @param rows
-	 * @param columns
+	 * The World constructor constructs a new 2D world of size [rows][columns].
+	 * @param rows Number of rows in the 2D world
+	 * @param columns Number of columns in the 2D world
 	 */
 	public World(int rows, int columns){
-		this.numRows = rows;
-		this.numCols = columns;
+		if ((rows > 0) && (columns > 0)) {
+			this.numRows = rows;
+			this.numCols = columns;
+			this.myWorld = new WorldObject[numRows][numCols];
+		} else {
+			throw new IllegalArgumentException("The number of rows and columns must both be positive integers.");
+		}
 		
-		//this.autonomousBlocks = new ArrayList<Position>();
-		this.myWorld = new WorldObject[numRows][numCols];
 	}
 	
 	/**
-	 * 
+	 * The 'step' method advances the simulation of the setup world by one step.
+	 * That is, each autonomous object can make one step, for which other objects
+	 * may move because of collisions caused by these moving autonomous objects.
 	 */
 	public void step() {
 		
@@ -29,30 +41,33 @@ public class World {
 		
 		for (int i = 0; i < this.numRows; i++) {
 			for (int j = 0;  j < this.numCols; j++) {
+				
+				//If the WorldObject at position (i,j) is an Autonomous object,
+				//which has not already been moved, then we will attempt to move it.
 				if ((myWorld[i][j] instanceof Autonomous) && (!alreadyMoved(i,j))) {
 					attemptedStep = ((Autonomous) myWorld[i][j]).step();
-					System.out.println("Attempting to move Autonomous Object: " + myWorld[i][j].getName() + " " + attemptedStep.toString());
-					System.out.println("Current Position of " + myWorld[i][j].getName() + ":(" + i + "," + j + ")");
+					
+					//Attempt to move the given Autonomous object in the direction
+					//that it generated.  If it can be moved, record its new position.
 					if (move(i,j, attemptedStep)) {
-						System.out.println("Move Successful!");
 						this.previouslyVisited.add(newLocation(i, j, attemptedStep));
-						Position newStep = newLocation(i, j, attemptedStep);
-						System.out.println("New Position: (" + newStep.getI() + "," + newStep.getJ() + ")");
-					} else {
-						System.out.println("Move Unsuccessful!");
-					}
+					} 
 				}
 			}
 		}
 		
+		//After we have traversed through the entire world and (attempted) to move all
+		//Autonomous objects, this step of the simulation has now finished and thus,
+		//we will clear the list of positions for the next step.
 		this.previouslyVisited.clear();
 	}
 	
 	/**
-	 * 
-	 * @param i
-	 * @param j
-	 * @param attemptedMove
+	 * Given a starting row and column and a direction, the 'newLocation' method
+	 * generates a Position object of the new row and column under that direction.
+	 * @param oldX Starting row
+	 * @param oldY Starting column
+	 * @param attemptedMove Direction to be moved
 	 * @return
 	 */
 	private Position newLocation(int oldX, int oldY, Direction attemptedMove) {
@@ -79,21 +94,23 @@ public class World {
 	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * The 'alreadyMoved' method checks if the given position (x,y) 
+	 * is recorded in the previouslyVisited list.  If yes, it returns true.
+	 * @param x Specified row
+	 * @param y Specified column
+	 * @return True, if (x,y) is contained in the list previouslyVisited; false, otherwise.
 	 */
 	private boolean alreadyMoved(int x, int y) {
 		return (this.previouslyVisited.contains(new Position(x, y)));
 	}
 	
 	/**
-	 * 
+	 * The 'move' method recursively attempts to move the specified Movable object at position (x,y)
+	 * under the specified direction.  As a precondition, the object at position (i,j) must be a Movable object.
 	 * @param i
 	 * @param j
-	 * @param attemptedMove
-	 * @return
+	 * @param attemptedMove 
+	 * @return True, if the object has been moved and false, if it can't be moved.
 	 */
 	private boolean move(int i, int j, Direction attemptedMove) {
 		int xSearch = i; 
@@ -119,8 +136,11 @@ public class World {
 			if (myWorld[xSearch][ySearch] == null) {
 				swap(i, j, xSearch, ySearch);
 				return true;
+			//If an attempted move hits an immovable object, return false
 			} else if (myWorld[xSearch][ySearch] instanceof Immovable) {
 				return false;
+			//If an attempted move hits a movable object, check to see
+			//if said movable object can move in the same direction
 			} else if (myWorld[xSearch][ySearch] instanceof Movable) {
 				if (move(xSearch, ySearch, attemptedMove)) {
 					swap(i, j, xSearch, ySearch);
@@ -136,7 +156,8 @@ public class World {
 	}
 	
 	/**
-	 * 
+	 * The 'swap' method swaps WorldObjects held at positions (r1, c1) and (r2, c2).
+	 * As a precondition, (r1, c1) and (r2, c2) are both valid positions in the world.
 	 * @param r1
 	 * @param c1
 	 * @param r2
@@ -148,69 +169,6 @@ public class World {
 		this.myWorld[r2][c2] = temp;
 	}
 	
-	/*private boolean move(int i, int j, Direction attemptedMove) {
-		int xSearch = i; int ySearch = j; int delta; int boundary;
-		
-		
-		
-		//Check border conditions first
-		if (isMoveWithinBorders(i, j, attemptedMove)) {
-			
-			if (attemptedMove == Direction.NORTH) {
-				for (int i = x; i >= 0; i--) {
-					
-			}
-			
-			
-			switch (attemptedMove) {
-				case NORTH:
-					boundary = 0;
-					delta = -1;
-					break;
-				case SOUTH:
-					boundary = this.numRows - 1;
-					delta = 1;
-					break;
-				case EAST:
-					boundary = this.numCols - 1;
-					delta = 1;
-					break;
-				case WEST:
-					boundary = 0;
-					delta = -1;
-					break;
-			}
-			
-			while 
-			
-		}
-		
-	}*/
-	
-	private boolean isMoveWithinBorders(int i, int j, Direction attemptedMove) {
-		int newRow = i;
-		int newCol = j;
-		
-		switch (attemptedMove) {
-			case NORTH:
-				newRow--;
-				break;
-			case SOUTH:
-				newRow++;
-				break;
-			case EAST:
-				newCol++;
-				break;
-			case WEST:
-				newCol--;
-				break;
-		}
-		
-		return (isValidIndex(newRow, newCol));
-		}
-		
-	
-	
 	
 	public WorldObject[][] getMyWorld(){
 		WorldObject[][] clone = this.myWorld.clone();
@@ -218,7 +176,10 @@ public class World {
 	}
 	
 	/**
+	 * The 'display' method prints to the screen a 2D representation of the world,
+	 * where at each occupied block, that WorldObject's token is printed.
 	 * 
+	 * To denote an empty block in the world, the ASCII character '░' is printed.
 	 */
 	public void display(){
 		int h = this.numRows; 
@@ -234,35 +195,25 @@ public class World {
 			}
 			System.out.println("");
 		}
-		
-		
-		/*for(int j = 0; j < h; j++){
-			for(int i = 0; i < w; i++){
-				if(this.myWorld[i][j] == null){
-					System.out.print(" ");
-				}else{
-					System.out.print(this.myWorld[i][j].getToken());
-				}
-			}
-		}*/
-		
 	}
 	
 	/**
-	 * 
+	 * The 'isCellEmpty' method checks to see if there is a WorldObject held at position (x,y).
+	 * As a precondition, (x,y) is a valid location.
 	 * @param x
 	 * @param y
 	 * @return
 	 */
-	public boolean isCellEmpty(int x, int y){
+	private boolean isCellEmpty(int x, int y){
 		return (this.myWorld[x][y] == null);
 	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * Given x,y parameters, the 'isValidIndex' returns true if the 2D index of World[x][y]
+	 * is valid.
+	 * @param x Row parameter
+	 * @param y Column parameter
+	 * @return Boolean if World[x][y] is a valid location
 	 */
 	public boolean isValidIndex(int x, int y) {
 		int maxAccessibleHeight = this.numRows - 1;
@@ -271,13 +222,23 @@ public class World {
 		return ((0 <= x) && (x <= maxAccessibleHeight) && (0 <= y) && (y <= maxAccessibleWidth));
 	}
 	
-	
+	/**
+	 * The 'add' method attempts to store the given WorldObject at the specified location
+	 * in the World.  If the specified location is already occupied by another WorldObject,
+	 * an error results.
+	 * @param obj The WorldObject to be stored
+	 * @param x The specified location's row
+	 * @param y The specified location's column
+	 */
 	public void add(WorldObject obj, int x, int y){
-		
-		if (isCellEmpty(x,y)) {
-			this.myWorld[x][y] = obj;
+		if (isValidIndex(x,y)) {
+			if (isCellEmpty(x,y)) {
+				this.myWorld[x][y] = obj;
+			} else {
+				throw new IllegalArgumentException("The location specified is already occupied by another WorldObject.");
+			}
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("The location specified is not a valid location in this world.");
 		}
 		
 	}
